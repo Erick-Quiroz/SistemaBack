@@ -85,7 +85,7 @@ export const updateProductLGController = async (req, res) => {
       const product = await productLGModel.find({}).select("name");
       res.status(200).send({
         success: true,
-        message: "Lista de Productos",
+        message: "All Categories List",
         product,
       });
     } catch (error) {
