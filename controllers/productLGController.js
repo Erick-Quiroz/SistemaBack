@@ -82,7 +82,7 @@ export const updateProductLGController = async (req, res) => {
    // get all cat
    export const ProductLGControlller = async (req, res) => {
     try {
-      const product = await productLGModel.find({}).select("name");
+      const product = await productLGModel.find({});
       res.status(200).send({
         success: true,
         message: "All Categories List",
