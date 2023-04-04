@@ -31,4 +31,4 @@ const productLGSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("ProductsLG", productLGSchema);
+export default mongoose.model("products", productLGSchema);

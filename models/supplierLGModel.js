@@ -34,4 +34,4 @@ const supplierLGSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("SuppliersLG", supplierLGSchema);
+export default mongoose.model("Suppliers", supplierLGSchema);
