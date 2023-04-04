@@ -1,5 +1,5 @@
 import productLGModel from "../models/productLGModel.js";
-import fs from "fs";
+
 import slugify from "slugify";
 
 //createProductLGController,updateProductLGController, ProductLGControlller,singleProductLGController,deleteProductLGCOntroller
@@ -55,28 +55,34 @@ export const createProductLGController = async (req, res) => {
 
 //update product
 export const updateProductLGController = async (req, res) => {
-    try {
-      const { name } = req.body;
-      const { id } = req.params;
-      const product = await productLGModel.findByIdAndUpdate(
-        id,
-        { name, slug: slugify(name) },
-        { new: true }
-      );
-      res.status(200).send({
-        success: true,
-        messsage: "Product Updated Successfully",
-        product,
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(500).send({
-        success: false,
-        error,
-        message: "Error while updating product",
-      });
-    }
-  };
+  try {
+    const { name } = req.body;
+    const { description } = req.body;
+    const { state } = req.body;
+    const { category } = req.body;
+    const { id } = req.params;
+    const product = await productLGModel.findByIdAndUpdate(
+      id,
+      { name, slug: slugify(name),
+        description,
+        state,
+        category },
+      { new: true }
+    );
+    res.status(200).send({
+      success: true,
+      messsage: "Product Updated Successfully",
+      product,
+    })
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error while updating product",
+    });
+  }
+};
 
 
    // get all cat
@@ -85,7 +91,7 @@ export const updateProductLGController = async (req, res) => {
       const product = await productLGModel.find({});
       res.status(200).send({
         success: true,
-        message: "All Categories List",
+        message: "All products List",
         product,
       });
     } catch (error) {

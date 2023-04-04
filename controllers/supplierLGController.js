@@ -3,92 +3,70 @@ import fs from "fs";
 import slugify from "slugify";
 
 export const createSupplierLGController = async (req, res) => {
+  try{
+      const{name, address, phonenumber1, phonenumber2, email1 , email2} = req.body
+      //validations
+      if(!name){
+          return res.send({error:'name is required'})
+      }if(!address){
+          return res.send({message:'addres is required'})
+      }if(!phonenumber1){
+          return res.send({message:'phonenumber1 error is required'})
+      }if(!phonenumber2){
+          return res.send({error:'phonenumber2 is required'})
+      }if(!email1){
+        return res.send({error:'email1 is required'})
+      }if(!email2){
+        return res.send({error:'email2 is required'})
+      }
+      //check user
+
+      const existingUser = await supplierLGModel.findOne({name})
+      console.log(existingUser)
+
+      //existing user
+
+      if(existingUser){
+          return res.status(200).send({
+              success:false,
+              message:'already register'
+          })
+      }
+      //save
+      const supplierLG = await new supplierLGModel({
+          name, slug:slugify(name), address, phonenumber1, phonenumber2, email1 , email2,
+      }).save()
+
+      res.status(201).send({
+          success:true,
+          message:'user register successfully',
+          supplierLG,
+      }).save
+
+  }catch(error){
+      console.log(error)
+          res.status(500).send({
+          success:false,
+          message:'error in registration',
+          error,
+      })
+  }
+}
+//get all suppliers
+export const getSupplierLGController = async (req, res) => {
   try {
-    const { name, address, phonenumber1, phonenumber2, email1 , email2 } =
-      req.fields;
-    const { photo } = req.files;
-    //validation
-    switch (true) {
-      case !name:
-        return res.status(500).send({ error: "Name is Required" });
-      case !address:
-        return res.status(500).send({ error: "Address is Required" });
-      case !phonenumber1:
-        return res.status(500).send({ error: "Phonenumber1 is Required" });
-      case !phonenumber2:
-        return res.status(500).send({ error: "Phonenumber2 is Required" });
-      case !email1:
-        return res.status(500).send({ error: "Email1 is Required" });
-      case !email2:
-        return res.status(500).send({ error: "Email2 is Required" });  
-    }
-
-    const existingUser = await testModel.findOne({name})
-        console.log(existingUser)
-           
-        //existing user
-        
-        if(existingUser){
-            return res.status(200).send({
-                success:false,
-                message:'already register'
-            })
-        }
-
-        //save
-        const supplier = await new supplierLGModel({
-            name,address,phonenumber1, phonenumber2, email1, email2
-        }).save()
-
-        res.status(201).send({
-            success:true,
-            message:'supplier register successfully',
-            supplier,
-        }).save
-
-       
-    //const suppliers = new supplierLGModel({ ...req.fields, slug: slugify(name) });
-    /*if (photo) {
-      suppliers.photo.data = fs.readFileSync(photo.path);
-      suppliers.photo.contentType = photo.type;
-    }*/
-    /*await suppliers.save();
-    res.status(201).send({
+    const supplier = await supplierLGModel.find({});
+    res.status(200).send({
       success: true,
-      message: "Supplier Created Successfully",
-      suppliers,
-    });*/
-
+      message: "All Categories List",
+      supplier,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send({
       success: false,
       error,
-      message: "Error in creating supplier",
-    });
-  }
-};
-
-//get all suppliers
-export const getSupplierLGController = async (req, res) => {
-  try {
-    const suppliers = await supplierLGModel
-      .find({})
-      .populate("category")
-      .limit(12)
-      .sort({ createdAt: -1 });
-    res.status(200).send({
-      success: true,
-      counTotal: suppliers.length,
-      message: "ALlsuppliers ",
-      suppliers,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send({
-      success: false,
-      message: "Erorr in getting suppliers",
-      error: error.message,
+      message: "Error while getting all categories",
     });
   }
 };
