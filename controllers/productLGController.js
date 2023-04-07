@@ -6,7 +6,7 @@ import slugify from "slugify";
 
 export const createProductLGController = async (req, res) => {
     try{
-        const{name, description, state, category} = req.body
+        const{name, description, state, category, imageUrl} = req.body
         //validations
         if(!name){
             return res.send({error:'name is required'})
@@ -16,6 +16,8 @@ export const createProductLGController = async (req, res) => {
             return res.send({message:'state error is required'})
         }if(!category){
             return res.send({error:'category is required'})
+        }if(!imageUrl){
+          return res.send({error:'name is required'})
         }
         
         
@@ -34,7 +36,7 @@ export const createProductLGController = async (req, res) => {
         }
         //save
         const product = await new productLGModel({
-            name, slug:slugify(name), description, state, category
+            name, slug:slugify(name), description, state, category, imageUrl
         }).save()
 
         res.status(201).send({
@@ -85,7 +87,7 @@ export const updateProductLGController = async (req, res) => {
 };
 
 
-   // get all cat
+   // get all products
    export const ProductLGControlller = async (req, res) => {
     try {
       const product = await productLGModel.find({});
