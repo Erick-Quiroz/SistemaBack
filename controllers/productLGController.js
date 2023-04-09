@@ -55,7 +55,7 @@ export const createProductLGController = async (req, res) => {
     }
 }
 
-//update product
+//update product..
 export const updateProductLGController = async (req, res) => {
   try {
     const { name } = req.body;
@@ -73,7 +73,7 @@ export const updateProductLGController = async (req, res) => {
     );
     res.status(200).send({
       success: true,
-      messsage: "Product Updated Successfully",
+      messsage: "Product Updated Successfully..",
       product,
     })
   }catch (error) {
@@ -81,7 +81,7 @@ export const updateProductLGController = async (req, res) => {
     res.status(500).send({
       success: false,
       error,
-      message: "Error while updating product",
+      message: "Error while updating product..",
     });
   }
 };
