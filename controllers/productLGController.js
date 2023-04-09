@@ -109,10 +109,11 @@ export const updateProductLGController = async (req, res) => {
   // single product
   export const singleProductLGController = async (req, res) => {
     try {
-      const product = await productLGModel.findOne({ slug: req.params.slug });
+      const { slug } = req.params;
+      const product = await productLGModel.findById( slug );
       res.status(200).send({
         success: true,
-        message: "Get SIngle product SUccessfully",
+        message: "Get SIngle product SUccessfully C:",
         product,
       });
     } catch (error) {
@@ -120,7 +121,7 @@ export const updateProductLGController = async (req, res) => {
       res.status(500).send({
         success: false,
         error,
-        message: "Error While getting Single product",
+        message: "Error While getting Single product error",
       });
     }
   };
@@ -129,7 +130,7 @@ export const updateProductLGController = async (req, res) => {
   export const deleteProductLGCOntroller = async (req, res) => {
     try {
       const { id } = req.params;
-      await productLGModel.findByIdAndDelete(id);
+      await productLGModel.findByIdAndDelete(req.params.pid);
       res.status(200).send({
         success: true,
         message: "Categry Deleted Successfully",
