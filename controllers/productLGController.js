@@ -63,12 +63,14 @@ export const updateProductLGController = async (req, res) => {
     const { state } = req.body;
     const { category } = req.body;
     const { pid } = req.params;
+    const { imageUrl } = req.body;
     const product = await productLGModel.findByIdAndUpdate(
       pid,
       { name, slug: slugify(name),
         description,
         state,
-        category },
+        category,
+        imageUrl },
       { new: true }
     );
     res.status(200).send({
