@@ -62,9 +62,9 @@ export const updateProductLGController = async (req, res) => {
     const { description } = req.body;
     const { state } = req.body;
     const { category } = req.body;
-    const { id } = req.params;
+    const { pid } = req.params;
     const product = await productLGModel.findByIdAndUpdate(
-      id,
+      pid,
       { name, slug: slugify(name),
         description,
         state,
