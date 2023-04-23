@@ -12,10 +12,14 @@ const categorySchema = new mongoose.Schema({
         type:String,
         lowercase:true,
     },
-    imageUrl:{
-       type:String,
-       required:true,
-    }
+    description:{
+        type:String,
+        required:true,
+     },
+    state:{
+        type:String,
+        required:true,
+     }
 })
 
 export default mongoose.model("Category",categorySchema)
