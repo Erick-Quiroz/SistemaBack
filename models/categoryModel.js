@@ -12,7 +12,11 @@ const categorySchema = new mongoose.Schema({
         type:String,
         lowercase:true,
     },
-    imageUrl:{
+    description:{
+       type:String,
+       required:true,
+    },
+    state:{
        type:String,
        required:true,
     }

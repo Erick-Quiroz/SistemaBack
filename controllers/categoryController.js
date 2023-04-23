@@ -4,7 +4,10 @@ import slugify from "slugify"
 //create  category
 export const createCategoryController = async(req,res)=>{
     try{
-        const {name} = req.body
+        const {name} = req.body;
+        const {description} = req.body;
+        const {state} = req.body;
+        
         if(!name){
             return res.status(401).send({message:'name is required'})
 
@@ -17,7 +20,7 @@ export const createCategoryController = async(req,res)=>{
 
             })
         }
-        const category = await new categoryModel({name, slug:slugify(name)}).save()
+        const category = await new categoryModel({name, slug:slugify(name) , description, state}).save()
         res.status(201).send({
             succes:true,
             message:'new category created',
