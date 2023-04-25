@@ -1,12 +1,14 @@
 import categoryModel from "../models/categoryModel.js"
 import slugify from "slugify"
 
-//create  category
+//create  category :3
 export const createCategoryController = async(req,res)=>{
     try{
+
         const {name} = req.body
         const {description} = req.body;
         const {state} = req.body;
+
         if(!name){
             return res.status(401).send({message:'name is required'})
 
@@ -15,14 +17,16 @@ export const createCategoryController = async(req,res)=>{
         if(existingCategory){
             return res.status(200).send({
                 success:true,
-                message:'category already existing'
+                message:'La categoria ya existe'
 
             })
         }
+
         const category = await new categoryModel({name, slug:slugify(name),description,state}).save()
+
         res.status(201).send({
             succes:true,
-            message:'new category created',
+            message:'La categoria fue creada',
             category
         })
     }catch(error){

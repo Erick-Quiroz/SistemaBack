@@ -13,6 +13,7 @@ const categorySchema = new mongoose.Schema({
         lowercase:true,
     },
     description:{
+
         type:String,
         required:true,
      },
@@ -20,6 +21,7 @@ const categorySchema = new mongoose.Schema({
         type:String,
         required:true,
      }
+
 })
 
 
