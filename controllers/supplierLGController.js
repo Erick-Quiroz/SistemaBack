@@ -153,7 +153,7 @@ export const updateSupplierLGController = async (req, res) => {
         slug: slugify(name),
         address,
         phonenumber1,
-        phonenumber2,
+        phonenumber2, 
         email1,
         email2, 
       },
