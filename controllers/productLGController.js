@@ -23,6 +23,7 @@ export const createProductLGController = async (req, res) => {
     }
 
 
+    
     //check user
 
     const existingUser = await productLGModel.findOne({ name })

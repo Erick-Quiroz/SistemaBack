@@ -157,6 +157,7 @@ export const updateSupplierLGController = async (req, res) => {
         email1,
         email2, 
       },
+      
       { new: true }
     );
     res.status(200).send({

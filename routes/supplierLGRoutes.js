@@ -32,10 +32,12 @@ router.put(
     "/update-supplierLG/:pid",
     updateSupplierLGController
   );
+
   
 
 //routes
 /*
+
 
 
 
