@@ -4,10 +4,11 @@ import slugify from "slugify"
 //create  category :3
 export const createCategoryController = async(req,res)=>{
     try{
-        const {name} = req.body;
+
+        const {name} = req.body
         const {description} = req.body;
         const {state} = req.body;
-        
+
         if(!name){
             return res.status(401).send({message:'name is required'})
 
@@ -20,7 +21,9 @@ export const createCategoryController = async(req,res)=>{
 
             })
         }
-        const category = await new categoryModel({name, slug:slugify(name) , description, state}).save()
+
+        const category = await new categoryModel({name, slug:slugify(name),description,state}).save()
+
         res.status(201).send({
             succes:true,
             message:'La categoria fue creada',
@@ -40,10 +43,12 @@ export const createCategoryController = async(req,res)=>{
 export const updateCategoryController = async (req, res) => {
     try {
       const { name } = req.body;
+      const { description } = req.body;
+      const { state } = req.body;
       const { id } = req.params;
       const category = await categoryModel.findByIdAndUpdate(
         id,
-        { name, slug: slugify(name) },
+        { name, slug: slugify(name),description,state},
         { new: true }
       );
       res.status(200).send({
@@ -60,6 +65,7 @@ export const updateCategoryController = async (req, res) => {
       });
     }
   };
+  
   
   // get all cat
   export const categoryControlller = async (req, res) => {
@@ -83,7 +89,8 @@ export const updateCategoryController = async (req, res) => {
   // single category
   export const singleCategoryController = async (req, res) => {
     try {
-      const category = await categoryModel.findOne({ slug: req.params.slug });
+      const { slug } = req.params;
+      const category = await categoryModel.findById(slug);
       res.status(200).send({
         success: true,
         message: "Get SIngle Category SUccessfully",
@@ -106,7 +113,7 @@ export const updateCategoryController = async (req, res) => {
       await categoryModel.findByIdAndDelete(id);
       res.status(200).send({
         success: true,
-        message: "Categry Deleted Successfully",
+        message: "Category Deleted Successfully",
       });
     } catch (error) {
       console.log(error);

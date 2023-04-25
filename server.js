@@ -28,6 +28,7 @@ app.use(express.json())
 app.use(morgan('dev'))
 
 
+
 //routes
 
 app.use('/api/category',categoryRoutes)

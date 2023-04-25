@@ -13,14 +13,17 @@ const categorySchema = new mongoose.Schema({
         lowercase:true,
     },
     description:{
-       type:String,
-       required:true,
-    },
+
+        type:String,
+        required:true,
+     },
     state:{
-       type:String,
-       required:true,
-    }
+        type:String,
+        required:true,
+     }
+
 })
+
 
 export default mongoose.model("Category",categorySchema)
 

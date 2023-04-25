@@ -23,6 +23,7 @@ export const createProductLGController = async (req, res) => {
     }
 
 
+    
     //check user
 
     const existingUser = await productLGModel.findOne({ name })
@@ -43,7 +44,7 @@ export const createProductLGController = async (req, res) => {
 
     res.status(201).send({
       success: true,
-      message: 'user register successfully',
+      message: 'product register successfully',
       product,
     }).save
 
@@ -109,7 +110,7 @@ export const ProductLGControlller = async (req, res) => {
     res.status(500).send({
       success: false,
       error,
-      message: "Error while getting all categories",
+      message: "Error while getting all products",
     });
   }
 };
@@ -121,7 +122,7 @@ export const singleProductLGController = async (req, res) => {
     const product = await productLGModel.findById(slug);
     res.status(200).send({
       success: true,
-      message: "Get SIngle product SUccessfully C:",
+      message: "Get SIngle product SUccessfully",
       product,
     });
   } catch (error) {

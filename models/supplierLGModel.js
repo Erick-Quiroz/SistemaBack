@@ -35,3 +35,4 @@ const supplierLGSchema = new mongoose.Schema(
 );
 
 export default mongoose.model("Suppliers", supplierLGSchema);
+

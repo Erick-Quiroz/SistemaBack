@@ -39,7 +39,7 @@ export const createSupplierLGController = async (req, res) => {
 
       res.status(201).send({
           success:true,
-          message:'user register successfully',
+          message:'supplier register successfully',
           supplierLG,
       }).save
 
@@ -58,7 +58,7 @@ export const getSupplierLGController = async (req, res) => {
     const supplier = await supplierLGModel.find({});
     res.status(200).send({
       success: true,
-      message: "All Categories List",
+      message: "All suppliers List",
       supplier,
     });
   } catch (error) {
@@ -66,26 +66,25 @@ export const getSupplierLGController = async (req, res) => {
     res.status(500).send({
       success: false,
       error,
-      message: "Error while getting all categories",
+      message: "Error while getting all suppliers",
     });
   }
 };
 // get single supplier
 export const getSingleSupplierLGController = async (req, res) => {
   try {
-    const supplier = await supplierLGModel
-      .findOne({ slug: req.params.slug })
-      .populate("category");
-    res.status(200).send({
-      success: true,
-      message: "Single supplier Fetched",
-      supplier,
-    });
+    const { slug } = req.params;
+      const provider = await supplierLGModel.findById( slug );
+      res.status(200).send({
+        success: true,
+        message: "get single product successfully",
+        provider,
+      });
   } catch (error) {
     console.log(error);
     res.status(500).send({
       success: false,
-      message: "Eror while getting single supplier",
+      message: "Eror getting supplier",
       error,
     });
   }
@@ -129,49 +128,50 @@ export const deleteSupplierLGController = async (req, res) => {
   }
 };
 
-//upate supplier
+/*
+        name, 
+        slug: slugify(name),
+        address,
+        phonenumber1,
+        phonenumber2,
+        email1,
+        email2, 
+*/
+//update supplier
 export const updateSupplierLGController = async (req, res) => {
   try {
-    const { name, address, phonenumber1, phonenumber2, email1 , email2 } =
-      req.fields;
-    const { photo } = req.files;
-    //validation
-    switch (true) {
-        case !name:
-          return res.status(500).send({ error: "Name is Required" });
-        case !address:
-          return res.status(500).send({ error: "Address is Required" });
-        case !phonenumber1:
-          return res.status(500).send({ error: "Phonenumber1 is Required" });
-        case !phonenumber2:
-          return res.status(500).send({ error: "Phonenumber2 is Required" });
-        case !email1:
-          return res.status(500).send({ error: "Email1 is Required" });
-        case !email2:
-          return res.status(500).send({ error: "Email2 is Required" });  
-      }
-
-    const suppliers = await supplierLGModel.findByIdAndUpdate(
-      req.params.pid,
-      { ...req.fields, slug: slugify(name) },
+    const { name } = req.body;
+    const { address } = req.body;
+    const { phonenumber1 } = req.body;
+    const { phonenumber2 } = req.body;
+    const { email1 } = req.body;
+    const { email2 } = req.body;
+    const { pid } = req.params;
+    const provider = await supplierLGModel.findByIdAndUpdate(
+      pid,
+      { name, 
+        slug: slugify(name),
+        address,
+        phonenumber1,
+        phonenumber2, 
+        email1,
+        email2, 
+      },
+      
       { new: true }
     );
-    if (photo) {
-        suppliers.photo.data = fs.readFileSync(photo.path);
-        suppliers.photo.contentType = photo.type;
-    }
-    await suppliers.save();
-    res.status(201).send({
+    res.status(200).send({
       success: true,
-      message: "supplier Updated Successfully",
-      suppliers,
-    });
+      messsage: "Product Updated Successfully",
+      provider,
+    })
+    
   } catch (error) {
     console.log(error);
     res.status(500).send({
       success: false,
       error,
-      message: "Error in Updte supplier",
+      message: "Error in Update supplier",
     });
   }
 };

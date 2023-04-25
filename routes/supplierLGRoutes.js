@@ -30,13 +30,14 @@ router.delete("/supplierLG/:pid", deleteSupplierLGController);
 //update
 router.put(
     "/update-supplierLG/:pid",
-    formidable(),
     updateSupplierLGController
   );
+
   
 
 //routes
 /*
+
 
 
 
