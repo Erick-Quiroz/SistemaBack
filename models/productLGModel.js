@@ -23,6 +23,10 @@ const productLGSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    porcentage: {
+      type: Number,
+      
+    },
     price: {
       type: Number,
       required: true,

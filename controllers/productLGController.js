@@ -6,7 +6,7 @@ import slugify from "slugify";
 
 export const createProductLGController = async (req, res) => {
   try {
-    const { name, description, state, category, price, imageUrl } = req.body
+    const { name, description, state, category, price, imageUrl,porcentage } = req.body
     //validations
     if (!name) {
       return res.send({ error: 'name is required' })
@@ -57,7 +57,35 @@ export const createProductLGController = async (req, res) => {
     })
   }
 }
-
+//update offer
+export const updateOfferLGController = async (req, res) => {
+  try {
+    
+    const { porcentage } = req.body;
+    const { pid } = req.params;
+    const product = await productLGModel.findByIdAndUpdate(
+      pid,
+      {
+        
+        porcentage
+        
+      },
+      { new: true }
+    );
+    res.status(200).send({
+      success: true,
+      messsage: "Offer Updated Successfully",
+      product,
+    })
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error while updating Offer",
+    });
+  }
+};
 //update product
 export const updateProductLGController = async (req, res) => {
   try {
@@ -154,5 +182,24 @@ export const deleteProductLGCOntroller = async (req, res) => {
   }
 };
 
+//deleteoffer
 
+export const deleteOfferLGCOntroller = async (req, res) => {
+  try {
+    const { pid } = req.params;
+    await productLGModel.findByIdAndUpdate( req.params.pid , { $set: { porcentage: 0 } });
+
+    res.status(200).send({
+      success: true,
+      message: "Product Porcentage Deleted Successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error while deleting product porcentage",
+      error,
+    });
+  }
+};
 

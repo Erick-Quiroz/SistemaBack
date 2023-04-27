@@ -29,7 +29,12 @@ router.put(
   
 
 //routes
-
+//offer
+router.put(
+  "/update-offerLG/:pid",updateOfferLGController
+);
+//delete rproduct
+router.delete("/offerDproductLG/:pid", deleteOfferLGCOntroller);
 
 
 
