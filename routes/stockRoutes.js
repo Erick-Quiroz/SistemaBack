@@ -1,7 +1,7 @@
 import express from "express";
 import {
-  createProductLGController,updateProductLGController, ProductLGControlller,singleProductLGController,deleteProductLGCOntroller, updateOfferLGController, deleteOfferLGCOntroller
-} from "../controllers/productLGController.js";
+  createProductLGController,updatestockController, ProductLGControlller,singleProductLGController,deleteProductLGCOntroller
+} from "../controllers/stockController.js";
 import formidable from "express-formidable";
 
 const router = express.Router();
@@ -23,18 +23,12 @@ router.get("/get-productLG/:slug", singleProductLGController);
 router.delete("/productLG/:pid", deleteProductLGCOntroller);
 
 //update
-router.put(
-    "/update-productLG/:pid",updateProductLGController
+router.put("/update-stock/:pid",updatestockController
   );
   
 
 //routes
-//offer
-router.put(
-  "/update-offerLG/:pid",updateOfferLGController
-);
-//delete rproduct
-router.delete("/offerDproductLG/:pid", deleteOfferLGCOntroller);
+
 
 
 
