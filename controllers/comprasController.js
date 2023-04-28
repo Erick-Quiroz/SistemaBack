@@ -2,6 +2,7 @@ import comprasModel from "../models/comprasModel.js";
 import slugify from "slugify";
 
 
+
 //create  compra
 export const createCompraController = async(req,res)=>{
     try{
@@ -16,6 +17,7 @@ export const createCompraController = async(req,res)=>{
         if(!name){
             return res.status(401).send({message:'name is required'})
         }
+
         //const existingCategory = await comprasModel.findOne({name})
         //if(existingCategory){
         //    return res.status(200).send({
@@ -24,6 +26,7 @@ export const createCompraController = async(req,res)=>{
 
         //    })
         //}
+
 
         const compras = await new comprasModel({name, slug:slugify(name),supplier,quantity,total,state,}).save()
 
@@ -41,6 +44,7 @@ export const createCompraController = async(req,res)=>{
         })
     }
 }
+
 
 // get all compras
 export const comprasGetControlller = async (req, res) => {
@@ -60,5 +64,6 @@ export const comprasGetControlller = async (req, res) => {
       });
     }
   }
+
 
 

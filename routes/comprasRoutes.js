@@ -1,5 +1,7 @@
 import express from "express";
+
 import { createCompraController,comprasGetControlller } from "../controllers/comprasController.js";
+
 
 const router = express.Router()
 
@@ -8,6 +10,7 @@ const router = express.Router()
 router.post('/create-compra',createCompraController)
 //getAll compras
 router.get("/get-compras", comprasGetControlller);
+
 
 export default router
 
