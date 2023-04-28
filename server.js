@@ -8,6 +8,7 @@ import connectDB from "./config/db.js"
 import categoryRoutes from './routes/categoryRoutes.js'
 import productLGRoutes from "./routes/productLGRoutes.js";
 import supplierLGRoutes from "./routes/supplierLGRoutes.js";
+import comprasRoutes from "./routes/comprasRoutes.js";
 import cors from "cors";
 
 
@@ -34,6 +35,7 @@ app.use(morgan('dev'))
 app.use('/api/category',categoryRoutes)
 app.use("/api/productLG", productLGRoutes);
 app.use("/api/supplierLG", supplierLGRoutes);
+app.use("/api/compras", comprasRoutes)
 
 
 
