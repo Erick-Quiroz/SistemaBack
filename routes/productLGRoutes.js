@@ -1,7 +1,7 @@
 import express from "express";
 import {
-  createProductLGController,updateProductLGController, ProductLGControlller,singleProductLGController,deleteProductLGCOntroller, updateOfferLGController, deleteOfferLGCOntroller
-} from "../controllers/productLGController.js";
+  createProductLGController,updateProductLGController, ProductLGControlller,singleProductLGController,deleteProductLGCOntroller
+  } from "../controllers/productLGController.js";
 import formidable from "express-formidable";
 
 const router = express.Router();
