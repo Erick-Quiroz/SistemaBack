@@ -34,6 +34,26 @@ const productLGSchema = new mongoose.Schema(
     imageUrl: {
       type: String,
       required: true,
+    }, 
+    expiration: {
+      type: String,
+      
+    },
+    existence: {
+      type: Number,
+      
+    },
+    cost: {
+      type: Number,
+      
+    },
+    utility: {
+      type: Number,
+      
+    },
+    received: {
+      type: Number,
+      
     }
     /*
     photo: {
