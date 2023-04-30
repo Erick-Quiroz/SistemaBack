@@ -9,7 +9,7 @@ import categoryRoutes from './routes/categoryRoutes.js'
 import productLGRoutes from "./routes/productLGRoutes.js";
 import supplierLGRoutes from "./routes/supplierLGRoutes.js";
 import cors from "cors";
-
+import stockRoutes from "./routes/stockRoutes.js"
 
 // express = require('express')
 //const colors = require('colors')
@@ -34,7 +34,7 @@ app.use(morgan('dev'))
 app.use('/api/category',categoryRoutes)
 app.use("/api/productLG", productLGRoutes);
 app.use("/api/supplierLG", supplierLGRoutes);
-
+app.use("/api/stock",stockRoutes )
 
 
 //rest api
