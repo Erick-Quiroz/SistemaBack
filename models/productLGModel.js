@@ -54,7 +54,11 @@ const productLGSchema = new mongoose.Schema(
     received: {
       type: Number,
       
-    }
+    },
+    supplier: {
+      type: String,
+      
+    },
     /*
     photo: {
       data: Buffer,
