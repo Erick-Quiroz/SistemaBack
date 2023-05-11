@@ -58,7 +58,8 @@ const productLGSchema = new mongoose.Schema(
     supplier: {
       type: String,
       
-    },
+    }
+
     /*
     photo: {
       data: Buffer,
