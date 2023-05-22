@@ -52,3 +52,108 @@ export const registerUserController = async (req, res) => {
     });
   }
 };
+export const singleUserLGController = async (req, res) => {
+  try {
+    const { email } = req.params;
+    const product = await productLGModel.findById(email);
+    res.status(200).send({
+      success: true,
+      message: "Get SIngle product SUccessfully",
+      product,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error While getting Single product error",
+    });
+  }
+};
+
+//update product
+export const updateUserLGController = async (req, res) => {
+  try {
+    const { name } = req.body;
+    const { email } = req.body;
+    const { lastname } = req.body;
+    const { phone } = req.body;
+    const { password } = req.body;
+    
+    const product = await productLGModel.findByIdAndUpdate(
+      pid,
+      {
+        name,
+        email,
+        lastname,
+        phone,
+        password
+      },
+      { new: true }
+    );
+    res.status(200).send({
+      success: true,
+      messsage: "Product Updated Successfully",
+      product,
+    })
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error while updating product",
+    });
+  }
+};
+export const updateUserController = async (req, res) => {
+  try {
+    const { email, name, lastname, phone, password } = req.body;
+    
+    // validations
+    if (!name) {
+      return res.send({ error: "Name is required" });
+    }
+    if (!email) {
+      return res.send({ message: "Email is required" });
+    }
+    if (!password) {
+      return res.send({ message: "Password is required" });
+    }
+    if (!phone) {
+      return res.send({ message: "Phone number is required" });
+    }
+    
+    // find user by email
+    const existingUser = await userModel.findOne({ email });
+
+    // user not found
+    if (!existingUser) {
+      return res.status(404).send({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // update user data
+    existingUser.name = name;
+    existingUser.lastname = lastname;
+    existingUser.phone = phone;
+    existingUser.password = await hashPassword(password);
+
+    // save the updated user data
+    const updatedUser = await existingUser.save();
+
+    res.status(200).send({
+      success: true,
+      message: "User data updated successfully",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in updating user data",
+      error,
+    });
+  }
+};
