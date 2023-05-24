@@ -207,3 +207,23 @@ export const deleteOfferLGCOntroller = async (req, res) => {
   }
 };
 
+// filter Category product
+export const filterCategoryProductLGController = async (req, res) => {
+  try {
+    const { cate } = req.params;
+    const product = await productLGModel.find({category : cate});
+    res.status(200).send({
+      success: true,
+      message: "Ge SIngle product SUccessfully",
+      product,
+      
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error While getting Single product error",
+    });
+  }
+};
