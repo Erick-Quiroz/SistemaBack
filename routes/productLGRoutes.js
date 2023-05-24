@@ -39,7 +39,7 @@ router.delete("/offerDproductLG/:pid", deleteOfferLGCOntroller);
 //filter product category 
 router.get("/filter-Category-productLG/:cate", filterCategoryProductLGController);
 
-
+//subir
 
 
 //get photo
