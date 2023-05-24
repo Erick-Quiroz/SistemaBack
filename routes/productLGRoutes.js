@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  createProductLGController,updateProductLGController,updateOfferLGController,deleteOfferLGCOntroller ,ProductLGControlller,singleProductLGController,deleteProductLGCOntroller
+  createProductLGController,updateProductLGController,updateOfferLGController,deleteOfferLGCOntroller ,ProductLGControlller,singleProductLGController,deleteProductLGCOntroller, filterCategoryProductLGController
 } from "../controllers/productLGController.js";
 import formidable from "express-formidable";
 
@@ -36,7 +36,8 @@ router.put(
 //delete rproduct
 router.delete("/offerDproductLG/:pid", deleteOfferLGCOntroller);
 
-
+//filter product category 
+router.get("/filter-Category-productLG/:cate", filterCategoryProductLGController);
 
 
 
