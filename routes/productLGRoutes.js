@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  createProductLGController,updateProductLGController,updateOfferLGController,deleteOfferLGCOntroller ,ProductLGControlller,singleProductLGController,deleteProductLGCOntroller, filterCategoryProductLGController
+  createProductLGController,updateProductLGController,updateOfferLGController,deleteOfferLGCOntroller ,ProductLGControlller,singleProductLGController,deleteProductLGCOntroller, filterCategoryProductLGController, filterOfferPriceProductLGController
 } from "../controllers/productLGController.js";
 import formidable from "express-formidable";
 
@@ -39,7 +39,8 @@ router.delete("/offerDproductLG/:pid", deleteOfferLGCOntroller);
 //filter product category 
 router.get("/filter-Category-productLG/:cate", filterCategoryProductLGController);
 
-//subir
+//filtro product categoria por oferta y precio
+router.get("/filter-Offer-Category-productLG/:radio/:checked/:categoria", filterOfferPriceProductLGController);
 
 
 //get photo
