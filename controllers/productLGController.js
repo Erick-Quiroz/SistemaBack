@@ -227,3 +227,39 @@ export const filterCategoryProductLGController = async (req, res) => {
     });
   }
 };
+
+// filtro product por oferta y precio
+export const filterOfferPriceProductLGController = async (req, res) => {
+  try {
+    const {radio, checked, categoria} = req.params;
+         //Precio Oferta   Categoria
+    const args = {}//Oferta
+    let arg = {}
+    if(checked !== "0") {
+      args.$ne = 0 
+    }else{
+      args.$ne = undefined 
+    }
+    if(radio > 0){
+      if(radio === "1"){
+        arg = { price: parseInt(1) }//De menor a mayor
+      }if(radio === "2"){
+        arg = { price: parseInt(-1) }//De mayor a menor
+      }
+    }
+    const products = await productLGModel.find({category: categoria, porcentage: args}).sort( arg )
+    console.log(products)
+    res.status(200).send({
+      success: true,
+      message: "Ge SIngle product SUccessfully",
+      products,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error While getting Single product error",
+    });
+  }
+}
