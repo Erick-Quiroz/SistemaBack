@@ -86,13 +86,14 @@ export const loginController = async (req, res) => {
       role = 1; // If the user has a role of 1, assign 1 for administrators
     }
     // Generate JWT token
-    const token = await JWT.sign({ _id: user._id, role }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
+    const token = await JWT.sign({ user }, process.env.JWT_SECRET, {
+      expiresIn: 86400,
     });
 
     // Return success response with token and user role
     res.status(200).json({
       success: true,
+      user,
       token,
       role,
     });
@@ -105,6 +106,102 @@ export const loginController = async (req, res) => {
     });
   }
 };
+//verifytoken
 
+export const verifyToken = async (req, res, next) => {
+  const token = req.headers["token"];
 
+  if (token) {
+    JWT.verify(token, "secreto", (error, data) => {
+      if (error) return res.status(400).json({ mensaje: "Token invalido" });
+      else {
+        req.user = data;
+        next();
+      }
+    });
+  } else {
+    res.status(400).json({ mensaje: "Debes enviar un token" });
+  }
+};
 
+///getuser
+export const getUserById = async (req, res) => {
+  try {
+    const { id } = req.user;
+
+    if (id.length === 24) {
+      const usuario = await userModel.findById(id);
+      if (!usuario) {
+        return res.json({
+          mensaje: "No se encontró ningún usuario con esa ID",
+        });
+      } else {
+        const { _id, contraseña, __v, ...resto } = usuario._doc;
+        res.json(resto);
+      }
+    } else {
+      res.json({ mensaje: "Estás enviando una contraseña incorrecta" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      mensaje: "Error al obtener el usuario",
+      error: error.message,
+    });
+  }
+};
+// single User
+export const singleUserLGController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await userModel.findById(id);
+    res.status(200).send({
+      success: true,
+      message: "Get SIngle User SUccessfully",
+      user,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error While getting Single product error",
+    });
+  }
+};
+
+//update User
+export const updateUserLGController = async (req, res) => {
+  try {
+    const { name } = req.body;
+    const { email } = req.body;
+    const { lastname } = req.body;
+    const { phone } = req.body;
+    const { password } = req.body;
+    
+    const user = await userModel.findByIdAndUpdate(
+      pid,
+      {
+        name, 
+        email,
+        lastname,
+        phone,
+        password
+        
+      },
+      { new: true }
+    );
+    res.status(200).send({
+      success: true,
+      messsage: "Product Updated Successfully",
+      user,
+    })
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error while updating product",
+    });
+  }
+};
