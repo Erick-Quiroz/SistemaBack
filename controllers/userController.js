@@ -52,108 +52,59 @@ export const registerUserController = async (req, res) => {
     });
   }
 };
-export const singleUserLGController = async (req, res) => {
-  try {
-    const { email } = req.params;
-    const product = await productLGModel.findById(email);
-    res.status(200).send({
-      success: true,
-      message: "Get SIngle product SUccessfully",
-      product,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send({
-      success: false,
-      error,
-      message: "Error While getting Single product error",
-    });
-  }
-};
 
-//update product
-export const updateUserLGController = async (req, res) => {
-  try {
-    const { name } = req.body;
-    const { email } = req.body;
-    const { lastname } = req.body;
-    const { phone } = req.body;
-    const { password } = req.body;
-    
-    const product = await productLGModel.findByIdAndUpdate(
-      pid,
-      {
-        name,
-        email,
-        lastname,
-        phone,
-        password
-      },
-      { new: true }
-    );
-    res.status(200).send({
-      success: true,
-      messsage: "Product Updated Successfully",
-      product,
-    })
-  } catch (error) {
-    console.log(error);
-    res.status(500).send({
-      success: false,
-      error,
-      message: "Error while updating product",
-    });
-  }
-};
-export const updateUserController = async (req, res) => {
-  try {
-    const { email, name, lastname, phone, password } = req.body;
-    
-    // validations
-    if (!name) {
-      return res.send({ error: "Name is required" });
-    }
-    if (!email) {
-      return res.send({ message: "Email is required" });
-    }
-    if (!password) {
-      return res.send({ message: "Password is required" });
-    }
-    if (!phone) {
-      return res.send({ message: "Phone number is required" });
-    }
-    
-    // find user by email
-    const existingUser = await userModel.findOne({ email });
 
-    // user not found
-    if (!existingUser) {
-      return res.status(404).send({
+export const loginController = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    // Validation
+    if (!email || !password) {
+      return res.status(400).json({
         success: false,
-        message: "User not found",
+        message: "Invalid email or password",
       });
     }
+    // Verify user
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "Email is not registered",
+      });
+    }
+    // Check password match
+    const match = await comparePassword(password, user.password);
+    if (!match) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid password",
+      });
+    }
+    // Assign role value
+    let role = 0; // By default, the role is 0 for normal users
+    if (user.role === 1) {
+      role = 1; // If the user has a role of 1, assign 1 for administrators
+    }
+    // Generate JWT token
+    const token = await JWT.sign({ _id: user._id, role }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
 
-    // update user data
-    existingUser.name = name;
-    existingUser.lastname = lastname;
-    existingUser.phone = phone;
-    existingUser.password = await hashPassword(password);
-
-    // save the updated user data
-    const updatedUser = await existingUser.save();
-
-    res.status(200).send({
+    // Return success response with token and user role
+    res.status(200).json({
       success: true,
-      message: "User data updated successfully",
-      user: updatedUser,
+      token,
+      role,
     });
   } catch (error) {
     console.log(error);
-    res.status(500).send({
+    res.status(500).json({
       success: false,
-      message: "Error in updating user data",
-      error,
+      message: "Error in login",
+      error: error.message,
     });
   }
 };
+
+
+
