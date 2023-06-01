@@ -53,7 +53,7 @@ export const registerUserController = async (req, res) => {
   }
 };
 
-
+//parte login
 export const loginController = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -86,14 +86,13 @@ export const loginController = async (req, res) => {
       role = 1; // If the user has a role of 1, assign 1 for administrators
     }
     // Generate JWT token
-    const token = await JWT.sign({ user }, process.env.JWT_SECRET, {
-      expiresIn: 86400,
+    const token = await JWT.sign({ _id: user._id, role }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
     });
 
     // Return success response with token and user role
     res.status(200).json({
       success: true,
-      user,
       token,
       role,
     });
@@ -104,23 +103,6 @@ export const loginController = async (req, res) => {
       message: "Error in login",
       error: error.message,
     });
-  }
-};
-//verifytoken
-
-export const verifyToken = async (req, res, next) => {
-  const token = req.headers["token"];
-
-  if (token) {
-    JWT.verify(token, "secreto", (error, data) => {
-      if (error) return res.status(400).json({ mensaje: "Token invalido" });
-      else {
-        req.user = data;
-        next();
-      }
-    });
-  } else {
-    res.status(400).json({ mensaje: "Debes enviar un token" });
   }
 };
 
@@ -153,11 +135,17 @@ export const getUserById = async (req, res) => {
 // single User
 export const singleUserLGController = async (req, res) => {
   try {
-    const { id } = req.params;
-    const user = await userModel.findById(id);
+    const { email } = req.params;
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return res.status(404).send({
+        success: false,
+        message: "User not found",
+      });
+    }
     res.status(200).send({
       success: true,
-      message: "Get SIngle User SUccessfully",
+      message: "Get Single User Successfully",
       user,
     });
   } catch (error) {
@@ -165,7 +153,25 @@ export const singleUserLGController = async (req, res) => {
     res.status(500).send({
       success: false,
       error,
-      message: "Error While getting Single product error",
+      message: "Error while getting single user",
+    });
+  }
+};
+export const getuseridLGController = async (req, res) => {
+  try {
+    const { slug } = req.params;
+      const user = await userModel.findById( slug );
+      res.status(200).send({
+        success: true,
+        message: "get single product successfully",
+        user,
+      });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Eror getting supplier",
+      error,
     });
   }
 };
@@ -178,7 +184,7 @@ export const updateUserLGController = async (req, res) => {
     const { lastname } = req.body;
     const { phone } = req.body;
     const { password } = req.body;
-    
+    const { pid } = req.params;
     const user = await userModel.findByIdAndUpdate(
       pid,
       {
