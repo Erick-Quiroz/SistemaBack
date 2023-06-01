@@ -52,6 +52,7 @@ export const registerUserController = async (req, res) => {
     });
   }
 };
+
 //parte login
 export const loginController = async (req, res) => {
   try {
@@ -105,4 +106,108 @@ export const loginController = async (req, res) => {
   }
 };
 
+///getuser
+export const getUserById = async (req, res) => {
+  try {
+    const { id } = req.user;
 
+    if (id.length === 24) {
+      const usuario = await userModel.findById(id);
+      if (!usuario) {
+        return res.json({
+          mensaje: "No se encontró ningún usuario con esa ID",
+        });
+      } else {
+        const { _id, contraseña, __v, ...resto } = usuario._doc;
+        res.json(resto);
+      }
+    } else {
+      res.json({ mensaje: "Estás enviando una contraseña incorrecta" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      mensaje: "Error al obtener el usuario",
+      error: error.message,
+    });
+  }
+};
+// single User
+export const singleUserLGController = async (req, res) => {
+  try {
+    const { email } = req.params;
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return res.status(404).send({
+        success: false,
+        message: "User not found",
+      });
+    }
+    res.status(200).send({
+      success: true,
+      message: "Get Single User Successfully",
+      user,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error while getting single user",
+    });
+  }
+};
+export const getuseridLGController = async (req, res) => {
+  try {
+    const { slug } = req.params;
+      const user = await userModel.findById( slug );
+      res.status(200).send({
+        success: true,
+        message: "get single product successfully",
+        user,
+      });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Eror getting supplier",
+      error,
+    });
+  }
+};
+
+//update User
+export const updateUserLGController = async (req, res) => {
+  try {
+    const { name } = req.body;
+    const { email } = req.body;
+    const { lastname } = req.body;
+    const { phone } = req.body;
+    const { password } = req.body;
+    const { pid } = req.params;
+    const user = await userModel.findByIdAndUpdate(
+      pid,
+      {
+        name, 
+        email,
+        lastname,
+        phone,
+        password
+        
+      },
+      { new: true }
+    );
+    res.status(200).send({
+      success: true,
+      messsage: "Product Updated Successfully",
+      user,
+    })
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error while updating product",
+    });
+  }
+};
